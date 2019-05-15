@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+  main:
+    build: ./build
+    # image: debian:latest
+    restart: always
+    # # for dind
+    # privileged: true
+    depends_on:
+      - pg
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/mnt/host
+    working_dir: /mnt/host
+    env_file:
+     - .env
+    command: tail -f /dev/null
+    stop_signal: SIGKILL
+  pg:
+    image: postgres:10
+    restart: always
+    env_file:
+     - .env
+    volumes:
+      - pg-data:/var/lib/postgresql/data/pgdata
+volumes:
+  pg-data:
+# networks:
+#   default:
+#     ipam:
+#       config:
+#         - subnet: 192.100.3.0/24
