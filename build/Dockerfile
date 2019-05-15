@@ -8,3 +8,8 @@ RUN set -x \
         ca-certificates \
         curl \
         && rm -rf /var/lib/apt/lists/*
+
+ARG USER_NAME=user
+RUN useradd -ms /bin/bash $USER_NAME
+USER $USER_NAME
+WORKDIR /home/$USER_NAME
